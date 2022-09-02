@@ -1,12 +1,43 @@
-SELECT `userspk`.`avatar` AS `user_avatar`, 
-`a`.`user_id`, 
-`a`.`answer_record`, 
- MAX(`score`) AS `score`
-FROM (select * from pkrecord  order by score desc) as a 
-INNER JOIN `userspk` AS `userspk` 
-ON `a`.`user_id` = `userspk`.`user_id`
-WHERE `a`.`status` = 1 
-AND `a`.`user_id` != 'm_6da5d9e0-4629-11e9-b5f7-694ced396953' 
-GROUP BY `user_id`
-ORDER BY `a`.`score` DESC 
-LIMIT 9;
+-- Create activities event log for all heart disease patients.
+
+DROP TABLE mimiciii.activities_event_log;
+
+CREATE TABLE mimiciii.activities_event_log AS(
+SELECT
+  subject_id, 
+  hadm_id,
+  icustay_id,
+  'admissions' AS tablename,
+  category,
+  activity, 
+  charttime
+FROM 
+  mimiciii.admissions_event_log
+
+UNION ALL
+
+SELECT
+  subject_id, 
+  hadm_id,
+  icustay_id,
+  'icustays' AS tablename,
+  category,
+  activity, 
+  charttime
+FROM 
+  mimiciii.icustays_event_log
+
+UNION ALL
+
+SELECT
+  subject_id, 
+  hadm_id,
+  icustay_id,
+  'procedureevents_mv' AS tablename,
+  category,
+  activity, 
+  starttime
+FROM 
+  mimiciii.procedureevents_mv_event_log
+  ORDER BY subject_id, hadm_id, charttime, tablename, category, activity
+);
