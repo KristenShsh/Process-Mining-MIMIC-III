@@ -1,3 +1,6 @@
+DROP TABLE mimiciii.procedureevents_event_log;
+
+CREATE TABLE mimiciii.procedureevents_event_log AS(
 SELECT DISTINCT
   procedureevents_mv.subject_id, 
   procedureevents_mv.hadm_id, 
@@ -18,5 +21,6 @@ WHERE
   procedureevents_mv.itemid = d_items.itemid AND
   d_items.label IS NOT NULL AND
   procedureevents_mv.cgid = caregivers.cgid AND
-  diagnoses_icd.icd9_code BETWEEN '390%' AND '460%' -- Change the values for different diseases
-ORDER BY procedureevents_mv.subject_id, procedureevents_mv.hadm_id, procedureevents_mv.icustay_id, starttime, category, activity;
+  diagnoses_icd.icd9_code BETWEEN '390%' AND '429%' -- Change the values for different diseases
+ORDER BY procedureevents_mv.subject_id, procedureevents_mv.hadm_id, procedureevents_mv.icustay_id, starttime, category, activity
+);
