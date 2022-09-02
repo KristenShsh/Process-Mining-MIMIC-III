@@ -14,6 +14,6 @@ FROM
 WHERE 
   transfertime IS NOT NULL AND
   services.curr_service IS NOT NULL AND
-  diagnoses_icd.icd9_code BETWEEN '390%' AND '460%' -- Change the values for different diseases
+  diagnoses_icd.icd9_code BETWEEN '390%' AND '429%' -- Change the values for different diseases
 ORDER BY services.subject_id, services.hadm_id, charttime, category, activity  
 );
